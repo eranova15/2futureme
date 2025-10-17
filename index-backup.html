@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Basic Meta -->
+    <title>2FutureMe - Voice Controlled Messages</title>
+    <meta name="description" content="Record voice messages and capture handwritten letters to be delivered to your future self after 3 months. Completely voice-controlled PWA.">
+    <meta name="keywords" content="voice messages, future self, time capsule, handwritten letters, voice control, PWA">
+    <meta name="author" content="2FutureMe">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="background-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="2FutureMe">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="application-name" content="2FutureMe">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-16x16.png">
+    <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="/assets/icons/icon.svg" color="#667eea">
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileImage" content="/assets/icons/icon-144x144.png">
+    <meta name="msapplication-square70x70logo" content="/assets/icons/icon-72x72.png">
+    <meta name="msapplication-square150x150logo" content="/assets/icons/icon-144x144.png">
+    <meta name="msapplication-wide310x150logo" content="/assets/icons/icon-384x192.png">
+    <meta name="msapplication-square310x310logo" content="/assets/icons/icon-384x384.png">
+
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="2FutureMe - Voice Messages to Your Future Self">
+    <meta property="og:description" content="Record voice messages and capture handwritten letters to be delivered to your future self after 3 months.">
+    <meta property="og:image" content="/assets/icons/icon-512x512.png">
+    <meta property="og:url" content="https://2futureme.app">
+    <meta property="og:site_name" content="2FutureMe">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="2FutureMe - Voice Messages to Your Future Self">
+    <meta name="twitter:description" content="Record voice messages and capture handwritten letters to be delivered to your future self after 3 months.">
+    <meta name="twitter:image" content="/assets/icons/icon-512x512.png">
+    
+    <!-- Security -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    
+    <!-- Performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- PWA Install Detection -->
+    <script>
+        // Detect if app was launched from home screen
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            document.documentElement.setAttribute('data-pwa-mode', 'standalone');
+        }
+        
+        // Handle shortcut actions
+        const urlParams = new URLSearchParams(window.location.search);
+        const shortcutAction = urlParams.get('action') || document.body.dataset.shortcutAction;
+        if (shortcutAction) {
+            document.documentElement.setAttribute('data-shortcut-action', shortcutAction);
+        }
+    </script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Clean Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">2FM</div>
+                <h1>Write to your future self</h1>
+                <p class="subtitle">Your message will be delivered in 3+ months</p>
+            </div>
+            
+            <!-- Progress bar (hidden initially) -->
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-text" id="progressText">Step 1 of 3</span>
+            </div>
+        </header>
+
+        <!-- Preparation Flow (Initially visible) -->
+        <section class="preparation-flow" id="preparationFlow">
+            <div class="prep-container">
+                <div class="prep-header">
+                    <div class="prep-icon">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h2>Ready for Your Future Self Journey?</h2>
+                    <p class="prep-subtitle">This isn't just another message app. You're about to create a meaningful connection with your future self.</p>
+                </div>
+
+                <div class="prep-stats">
+                    <div class="stat-highlight">
+                        <div class="stat-number">80%</div>
+                        <div class="stat-text">of people who complete this preparation say it was life-changing</div>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="mini-stat">
+                            <span class="mini-number">94%</span>
+                            <span class="mini-label">Feel more connected to their goals</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-number">87%</span>
+                            <span class="mini-label">Report increased self-awareness</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="mini-number">92%</span>
+                            <span class="mini-label">Say it helped them stay motivated</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prep-questions">
+                    <div class="question-card active" data-question="1">
+                        <div class="question-number">1</div>
+                        <h3>What's your intention for this message?</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="intention" value="motivation">
+                                <div class="option-content">
+                                    <div class="option-icon">🎯</div>
+                                    <div class="option-text">
+                                        <strong>Motivation & Goals</strong>
+                                        <small>Remind yourself of your dreams and aspirations</small>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="intention" value="reflection">
+                                <div class="option-content">
+                                    <div class="option-icon">🤔</div>
+                                    <div class="option-text">
+                                        <strong>Reflection & Growth</strong>
+                                        <small>Capture this moment and your current thoughts</small>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="intention" value="gratitude">
+                                <div class="option-content">
+                                    <div class="option-icon">🙏</div>
+                                    <div class="option-text">
+                                        <strong>Gratitude & Appreciation</strong>
+                                        <small>Share what you're thankful for today</small>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="intention" value="advice">
+                                <div class="option-content">
+                                    <div class="option-icon">💡</div>
+                                    <div class="option-text">
+                                        <strong>Advice & Wisdom</strong>
+                                        <small>Give yourself guidance for the future</small>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="question-card" data-question="2">
+                        <div class="question-number">2</div>
+                        <h3>How do you want to feel when you receive this?</h3>
+                        <div class="emotion-grid">
+                            <div class="emotion-option" data-emotion="inspired">
+                                <div class="emotion-emoji">✨</div>
+                                <span>Inspired</span>
+                            </div>
+                            <div class="emotion-option" data-emotion="proud">
+                                <div class="emotion-emoji">🏆</div>
+                                <span>Proud</span>
+                            </div>
+                            <div class="emotion-option" data-emotion="peaceful">
+                                <div class="emotion-emoji">🧘</div>
+                                <span>Peaceful</span>
+                            </div>
+                            <div class="emotion-option" data-emotion="motivated">
+                                <div class="emotion-emoji">🔥</div>
+                                <span>Motivated</span>
+                            </div>
+                            <div class="emotion-option" data-emotion="grateful">
+                                <div class="emotion-emoji">❤️</div>
+                                <span>Grateful</span>
+                            </div>
+                            <div class="emotion-option" data-emotion="confident">
+                                <div class="emotion-emoji">💪</div>
+                                <span>Confident</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-card" data-question="3">
+                        <div class="question-number">3</div>
+                        <h3>Take a moment to center yourself</h3>
+                        <div class="centering-guide">
+                            <div class="breathing-circle" id="breathingCircle">
+                                <div class="inner-circle"></div>
+                                <div class="breathing-text">Breathe</div>
+                            </div>
+                            <p class="breathing-instruction">Follow the circle. Breathe in as it expands, breathe out as it contracts.</p>
+                            <div class="breathing-timer">
+                                <span id="breathingTimer">0:30</span>
+                                <small>remaining</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prep-actions">
+                    <button class="btn btn-secondary" id="skipPrep">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Skip Preparation
+                    </button>
+                    <button class="btn btn-primary" id="nextPrepStep" disabled>
+                        Next Step
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn btn-lg btn-primary" id="startRecording" style="display: none;">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="M12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2Z" fill="currentColor"/>
+                        </svg>
+                        I'm Ready - Start Recording
+                    </button>
+                </div>
+
+                <div class="prep-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="prepProgress"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step active" data-step="1">1</div>
+                        <div class="step" data-step="2">2</div>
+                        <div class="step" data-step="3">3</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main App (Initially hidden) -->
+        <div class="main-app" id="mainApp" style="display: none;">
+
+        <!-- Language Selection -->
+        <section class="language-section">
+            <div class="section-header">
+                <svg viewBox="0 0 24 24" class="section-icon">
+                    <path d="M12.87 15.07L10.33 12.56L10.36 12.53C12.1 10.59 13.34 8.36 14.07 6H17V4H10V2H8V4H1V6H12.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8H4.69C5.42 9.63 6.42 11.17 7.67 12.56L2.58 17.58L4 19L9 14L12.11 17.11L12.87 15.07ZM18.5 10H16.5L12 22H14L15.12 19H19.87L21 22H23L18.5 10ZM15.88 17L17.5 12.67L19.12 17H15.88Z" fill="currentColor"/>
+                </svg>
+                <h2>Choose Your Language</h2>
+            </div>
+            <div class="language-grid">
+                <div class="lang-card active" data-lang="en-US">
+                    <div class="lang-flag">🇺🇸</div>
+                    <span class="lang-name">English</span>
+                </div>
+                <div class="lang-card" data-lang="es-ES">
+                    <div class="lang-flag">🇪🇸</div>
+                    <span class="lang-name">Español</span>
+                </div>
+                <div class="lang-card" data-lang="fr-FR">
+                    <div class="lang-flag">🇫🇷</div>
+                    <span class="lang-name">Français</span>
+                </div>
+                <div class="lang-card" data-lang="de-DE">
+                    <div class="lang-flag">🇩🇪</div>
+                    <span class="lang-name">Deutsch</span>
+                </div>
+            </div>
+            <div class="voice-instruction">
+                <span class="voice-badge">Voice Command</span>
+                Say: "Change language to Spanish"
+            </div>
+        </section>
+
+        <!-- Main Action Area -->
+        <main class="main-content">
+            <div class="actions-grid">
+                <!-- Voice Recording Card -->
+                <div class="action-card voice-card" id="voiceCard">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" class="icon">
+                                <path d="M12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2Z" fill="currentColor"/>
+                                <path d="M19 11C19 15.42 15.42 19 11 19H13C17.42 19 21 15.42 21 11H19Z" fill="currentColor"/>
+                                <path d="M5 11C5 15.42 8.58 19 13 19H11C6.58 19 3 15.42 3 11H5Z" fill="currentColor"/>
+                                <rect x="11" y="20" width="2" height="4" fill="currentColor"/>
+                                <rect x="8" y="22" width="8" height="2" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h3>Voice Message</h3>
+                        <p>Record your thoughts with voice commands</p>
+                        <div class="voice-command-hint">
+                            <span class="voice-badge">Say</span>
+                            "Start Recording"
+                        </div>
+                        <div class="recording-visualizer hidden" id="recordingVisualizer">
+                            <div class="wave-bars">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                            <div class="recording-timer" id="recordingTimer">00:00</div>
+                        </div>
+                        <audio class="playback hidden" id="voicePlayback" controls></audio>
+                    </div>
+                </div>
+
+                <!-- Photo Capture Card -->
+                <div class="action-card photo-card" id="photoCard">
+                    <div class="card-glow"></div>
+                    <div class="card-content">
+                        <div class="action-icon">
+                            <svg viewBox="0 0 24 24" class="icon">
+                                <path d="M12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor"/>
+                                <path d="M20 4H16.83L15 2H9L7.17 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17Z" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <h3>Handwritten Letter</h3>
+                        <p>Capture your written thoughts with voice</p>
+                        <div class="voice-command-hint">
+                            <span class="voice-badge">Say</span>
+                            "Take Photo"
+                        </div>
+                        <video class="camera-preview hidden" id="cameraPreview" autoplay playsinline></video>
+                        <canvas class="photo-canvas hidden" id="photoCanvas"></canvas>
+                        <div class="camera-controls hidden" id="cameraControls">
+                            <div class="voice-command-hint">
+                                <span class="voice-badge">Say</span>
+                                "Capture" to take photo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Preview -->
+            <div class="message-preview hidden" id="messagePreview">
+                <div class="preview-header">
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                    </svg>
+                    <h3>Your Message Preview</h3>
+                </div>
+                <div class="preview-content" id="previewContent"></div>
+                <div class="message-actions">
+                    <div class="note-section">
+                        <label for="messageNote">Add a personal note (optional)</label>
+                        <textarea class="message-note" id="messageNote" placeholder="Write a note to your future self..."></textarea>
+                    </div>
+                    <div class="voice-actions">
+                        <div class="voice-command-group">
+                            <span class="voice-badge success">Say</span>
+                            <span class="command">"Save Message"</span>
+                            <span class="description">to store in your vault</span>
+                        </div>
+                        <div class="voice-command-group">
+                            <span class="voice-badge danger">Say</span>
+                            <span class="command">"Discard"</span>
+                            <span class="description">to delete this message</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Vault Section -->
+        <section class="vault-section">
+            <div class="section-header">
+                <svg viewBox="0 0 24 24" class="section-icon">
+                    <path d="M12 2L2 7L12 12L22 7L12 2ZM2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h2>Your Message Vault</h2>
+            </div>
+            
+            <div class="vault-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="totalMessages">0</span>
+                        <span class="stat-label">Total Messages</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="pendingMessages">0</span>
+                        <span class="stat-label">Pending Delivery</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon ready">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="readyMessages">0</span>
+                        <span class="stat-label">Ready to View</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vault-messages" id="vaultMessages">
+                <div class="empty-vault">
+                    <div class="empty-icon">
+                        <svg viewBox="0 0 24 24" class="icon">
+                            <path d="M12 2L2 7L12 12L22 7L12 2ZM2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Your vault is empty</h3>
+                    <p>Start recording voice messages or capturing handwritten letters to build your collection of future memories.</p>
+                    <div class="voice-command-hint">
+                        <span class="voice-badge">Try saying</span>
+                        "Start Recording" or "Take Photo"
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Voice Commands Guide -->
+        <aside class="voice-guide">
+            <div class="guide-header">
+                <svg viewBox="0 0 24 24" class="section-icon">
+                    <path d="M12 2V22M8 6V18M16 6V18M4 10V14M20 10V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <h3>Voice Commands Guide</h3>
+                <p>Control everything with your voice - no clicking required</p>
+            </div>
+            
+            <div class="commands-showcase">
+                <div class="command-category">
+                    <div class="category-header">
+                        <div class="category-icon">🎤</div>
+                        <h4>Recording</h4>
+                    </div>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Start Recording"</span>
+                        </div>
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Stop Recording"</span>
+                        </div>
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Take Photo"</span>
+                        </div>
+                        <div class="command-item">
+                            <span class="voice-badge success">Say</span>
+                            <span class="command">"Save Message"</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="command-category">
+                    <div class="category-header">
+                        <div class="category-icon">🧭</div>
+                        <h4>Navigation</h4>
+                    </div>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Go Back"</span>
+                        </div>
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Show Vault"</span>
+                        </div>
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Go Home"</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="command-category">
+                    <div class="category-header">
+                        <div class="category-icon">🌍</div>
+                        <h4>Language</h4>
+                    </div>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"Change language to Spanish"</span>
+                        </div>
+                        <div class="command-item">
+                            <span class="voice-badge">Say</span>
+                            <span class="command">"English" / "Français"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        </div> <!-- End main-app -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/preparation.js"></script>
+    <script src="js/voice-recognition.js"></script>
+    <script src="js/recording.js"></script>
+    <script src="js/camera.js"></script>
+    <script src="js/vault.js"></script>
+    <script src="js/voice-enhancer.js"></script>
+    <script src="js/performance-optimizer.js"></script>
+    <script src="js/premium-features.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
