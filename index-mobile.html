@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FutureMe - Message to Your Future Self</title>
+    <meta name="description" content="Write a heartfelt message to your future self. Delivered in 1 year.">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#1a365d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/favicon.ico">
+    
+    <!-- Modern Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/mobile-style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero-icon">✍️</div>
+                    <h1>2FutureMe</h1>
+                    <p class="hero-subtitle">A letter to the person you're becoming</p>
+                </div>
+                
+                <div class="welcome-content">
+                    <p class="welcome-description">Write yourself a message today. Receive it exactly one year from now. It's that simple, and that powerful.</p>
+                </div>
+                
+                <button id="startBtn" class="btn-primary">Write My Letter</button>
+                <button id="vaultBtn" class="btn-secondary">My Previous Letters</button>
+                
+                <div class="community-note">
+                    <p>Join thousands who've already written to their future selves</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inspiration Screen -->
+        <div id="inspirationScreen" class="screen">
+            <div class="container">
+                <div class="inspiration-content">
+                    <div class="inspiration-visual">
+                        <div class="growth-icon">🌱</div>
+                        <h2>Your Future Self is Waiting</h2>
+                    </div>
+                    
+                    <div class="inspiration-story">
+                        <p class="story-intro">Imagine opening a message from yourself exactly one year from today. What would you want to hear?</p>
+                        
+                        <div class="benefits">
+                            <h3>People who write to their future selves experience:</h3>
+                            <div class="benefit-list">
+                                <div class="benefit">
+                                    <span class="benefit-icon">✨</span>
+                                    <span>Increased self-awareness and reflection</span>
+                                </div>
+                                <div class="benefit">
+                                    <span class="benefit-icon">🎯</span>
+                                    <span>Better goal clarity and commitment</span>
+                                </div>
+                                <div class="benefit">
+                                    <span class="benefit-icon">💪</span>
+                                    <span>Stronger accountability to personal growth</span>
+                                </div>
+                                <div class="benefit">
+                                    <span class="benefit-icon">❤️</span>
+                                    <span>Greater self-compassion and understanding</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="inspiration-quote">
+                            <p>"This isn't just writing—it's a conversation with who you're becoming."</p>
+                        </div>
+                    </div>
+                    
+                    <button id="readyBtn" class="btn-primary accountability-btn">I'm Ready, Let's Get Accountable</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Writing Screen -->
+        <div id="writingScreen" class="screen">
+            <div class="writing-container">
+                <div class="writing-header">
+                    <button class="back-btn" onclick="app.showScreen('inspiration')">← Back</button>
+                    <button class="home-btn" onclick="app.showScreen('welcome')">🏠 Home</button>
+                </div>
+                
+                <div class="writing-area">
+                    <div class="writing-controls">
+                        <button class="focus-mode-btn" id="focusModeBtn">🎯 Focus Mode</button>
+                    </div>
+                    
+                    <textarea 
+                        id="messageTextarea" 
+                        class="message-input" 
+                        placeholder="Dear Future Me,
+
+Today is October 17, 2025, and I want to tell you...
+
+Share your current thoughts, dreams, challenges, or simply what's on your mind. This message will find you exactly one year from now."
+                    ></textarea>
+                    
+                    <div class="writing-footer">
+                        <div class="char-count" id="charCount">0 characters</div>
+                        <button id="reviewBtn" class="btn-primary" disabled>Review & Send</button>
+                    </div>
+                </div>
+                
+                <div class="date-info-horizontal">
+                    <div class="date-section">
+                        <span class="date-label">Today</span>
+                        <span id="currentDate" class="date-value">October 17, 2025</span>
+                    </div>
+                    <div class="arrow-horizontal">→</div>
+                    <div class="date-section">
+                        <span class="date-label">You'll receive this</span>
+                        <span id="deliveryDate" class="date-value">October 17, 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus Mode Overlay -->
+        <div id="focusOverlay" class="focus-overlay">
+            <div class="focus-background-blur"></div>
+            <div class="focus-content">
+                <div class="focus-header">
+                    <div class="focus-date">Today: October 17, 2025</div>
+                    <button class="exit-focus" id="exitFocus">Done</button>
+                </div>
+                
+                <div class="focus-writing-area">
+                    <textarea 
+                        id="focusTextarea" 
+                        class="focus-textarea" 
+                        placeholder="Dear Future Me,
+
+Today is October 17, 2025...
+
+Take your time. Let your thoughts flow naturally. This space is just for you and your future self."
+                    ></textarea>
+                </div>
+                
+                <div class="focus-footer">
+                    <div class="focus-char-count">0 characters</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Screen -->
+        <div id="reviewScreen" class="screen">
+            <div class="container">
+                <div class="review-header">
+                    <button class="back-btn" onclick="app.showScreen('writing')">← Back</button>
+                    <h2>Your Letter is Ready</h2>
+                    <p>Take a moment to review before sending</p>
+                </div>
+                
+                <div class="letter-preview">
+                    <div class="letter-envelope">
+                        <div class="letter-dates">
+                            <div class="letter-sent">Sent: <span id="reviewCurrentDate">October 17, 2025</span></div>
+                            <div class="letter-delivery">Delivery: <span id="reviewDeliveryDate">October 17, 2026</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="letter-content">
+                        <div id="letterPreview" class="letter-text">
+                            Your message will appear here...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-actions">
+                    <button id="sendBtn" class="btn-primary send-btn">Send My Letter ✍️</button>
+                    <button class="btn-secondary" onclick="app.showScreen('writing')">Edit Message</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Options Popup -->
+        <div id="deliveryPopup" class="delivery-popup">
+            <div class="popup-overlay"></div>
+            <div class="popup-content">
+                <div class="popup-header">
+                    <h3>How would you like to receive your letter?</h3>
+                    <p>Choose how we'll deliver your message in one year</p>
+                </div>
+                
+                <div class="delivery-options">
+                    <div class="delivery-option" data-option="app">
+                        <div class="option-icon">📱</div>
+                        <div class="option-info">
+                            <h4>In-App Notification</h4>
+                            <p class="option-description">Free - Receive it right here in the app</p>
+                            <span class="option-price">Free</span>
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-option" data-option="email">
+                        <div class="option-icon">📧</div>
+                        <div class="option-info">
+                            <h4>Email</h4>
+                            <p class="option-description">Get your letter delivered to your inbox</p>
+                            <span class="option-price">Free</span>
+                        </div>
+                        <div id="emailInput" style="display: none;">
+                            <input type="email" id="emailInputField" class="option-input" placeholder="Enter your email address">
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-option" data-option="sms">
+                        <div class="option-icon">💬</div>
+                        <div class="option-info">
+                            <h4>Text Message</h4>
+                            <p class="option-description">Receive a text with your letter</p>
+                            <span class="option-price">Free</span>
+                        </div>
+                        <div id="phoneInput" style="display: none;">
+                            <input type="tel" id="phoneInputField" class="option-input" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+                    
+                    <div class="delivery-option premium" data-option="letter">
+                        <div class="option-icon">📮</div>
+                        <div class="option-info">
+                            <h4>Physical Letter</h4>
+                            <p class="option-description">Beautiful printed letter delivered to your mailbox</p>
+                            <span class="option-price">$4.99</span>
+                        </div>
+                        <div id="addressInputs" class="address-inputs" style="display: none;">
+                            <input type="text" id="streetInput" placeholder="Street Address" class="address-input">
+                            <input type="text" id="cityInput" placeholder="City" class="address-input">
+                            <input type="text" id="stateInput" placeholder="State" class="address-input">
+                            <input type="text" id="zipInput" placeholder="ZIP Code" class="address-input">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="popup-actions">
+                    <button id="confirmDeliveryBtn" class="btn-primary">Confirm & Send</button>
+                    <button id="cancelDeliveryBtn" class="btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Screen -->
+        <div id="successScreen" class="screen">
+            <div class="container">
+                <div class="success-animation">
+                    <div class="success-checkmark">✓</div>
+                    <h2>Letter Sent!</h2>
+                    <p class="success-message">Your message is now traveling through time. You'll receive it on <strong id="successDate">October 17, 2026</strong>.</p>
+                </div>
+                
+                <div class="motivational-message">
+                    <div class="quote-icon">💫</div>
+                    <blockquote>
+                        "Growth is slow, but looking back to our path helps us navigate the strength needed to cross miles ahead."
+                    </blockquote>
+                </div>
+                
+                <div class="success-actions">
+                    <button id="writeAnotherBtn" class="btn-primary">Write Another Letter</button>
+                    <button id="backToHomeBtn" class="btn-secondary">Back to Home</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vault Screen -->
+        <div id="vaultScreen" class="screen">
+            <div class="container">
+                <div class="vault-header">
+                    <button class="back-home-btn" onclick="app.showScreen('welcome')">← Home</button>
+                    <h2>My Letter Vault</h2>
+                    <p>All your future letters in one place</p>
+                </div>
+                
+                <div class="vault-stats">
+                    <div class="stat">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Total Letters</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Delivered</span>
+                    </div>
+                </div>
+                
+                <div class="vault-letters" id="vaultLetters">
+                    <!-- Letters will be populated by JavaScript -->
+                </div>
+                
+                <button class="btn-primary" onclick="app.showScreen('welcome')">Write New Letter</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/mobile-app.js"></script>
+</body>
+</html>
