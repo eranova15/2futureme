@@ -1,0 +1,73 @@
+<!-- Modern SVG Icons for 2FutureMe -->
+
+<!-- Microphone Icon -->
+<svg id="mic-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2C10.34 2 9 3.34 9 5V11C9 12.66 10.34 14 12 14C13.66 14 15 12.66 15 11V5C15 3.34 13.66 2 12 2Z" fill="currentColor"/>
+  <path d="M19 11C19 15.42 15.42 19 11 19H13C17.42 19 21 15.42 21 11H19Z" fill="currentColor"/>
+  <path d="M5 11C5 15.42 8.58 19 13 19H11C6.58 19 3 15.42 3 11H5Z" fill="currentColor"/>
+  <rect x="11" y="20" width="2" height="4" fill="currentColor"/>
+  <rect x="8" y="22" width="8" height="2" fill="currentColor"/>
+</svg>
+
+<!-- Camera Icon -->
+<svg id="camera-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor"/>
+  <path d="M20 4H16.83L15 2H9L7.17 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17Z" fill="currentColor"/>
+</svg>
+
+<!-- Vault/Archive Icon -->
+<svg id="vault-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2L2 7L12 12L22 7L12 2ZM2 17L12 22L22 17M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+<!-- Voice Wave Icon -->
+<svg id="voice-wave-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 2V22M8 6V18M16 6V18M4 10V14M20 10V14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
+<!-- Clock/Future Icon -->
+<svg id="clock-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+  <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+<!-- Play Icon -->
+<svg id="play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+</svg>
+
+<!-- Pause Icon -->
+<svg id="pause-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <rect x="6" y="4" width="4" height="16" fill="currentColor"/>
+  <rect x="14" y="4" width="4" height="16" fill="currentColor"/>
+</svg>
+
+<!-- Stop Icon -->
+<svg id="stop-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor"/>
+</svg>
+
+<!-- Language Icon -->
+<svg id="language-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.87 15.07L10.33 12.56L10.36 12.53C12.1 10.59 13.34 8.36 14.07 6H17V4H10V2H8V4H1V6H12.17C11.5 7.92 10.44 9.75 9 11.35C8.07 10.32 7.3 9.19 6.69 8H4.69C5.42 9.63 6.42 11.17 7.67 12.56L2.58 17.58L4 19L9 14L12.11 17.11L12.87 15.07ZM18.5 10H16.5L12 22H14L15.12 19H19.87L21 22H23L18.5 10ZM15.88 17L17.5 12.67L19.12 17H15.88Z" fill="currentColor"/>
+</svg>
+
+<!-- Settings Icon -->
+<svg id="settings-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M19.14 12.94C19.18 12.64 19.2 12.33 19.2 12C19.2 11.68 19.18 11.36 19.13 11.06L21.16 9.48C21.34 9.34 21.39 9.07 21.28 8.87L19.36 5.55C19.24 5.33 18.99 5.26 18.77 5.33L16.38 6.29C15.88 5.91 15.35 5.59 14.76 5.35L14.4 2.81C14.36 2.57 14.16 2.4 13.92 2.4H10.08C9.84 2.4 9.64 2.57 9.6 2.81L9.24 5.35C8.65 5.59 8.12 5.92 7.62 6.29L5.23 5.33C5.01 5.26 4.76 5.33 4.64 5.55L2.72 8.87C2.61 9.08 2.66 9.34 2.86 9.48L4.89 11.06C4.84 11.36 4.8 11.69 4.8 12C4.8 12.31 4.82 12.64 4.87 12.94L2.84 14.52C2.66 14.66 2.61 14.93 2.72 15.13L4.64 18.45C4.76 18.67 5.01 18.74 5.23 18.67L7.62 17.71C8.12 18.09 8.65 18.41 9.24 18.65L9.6 21.19C9.64 21.43 9.84 21.6 10.08 21.6H13.92C14.16 21.6 14.36 21.43 14.4 21.19L14.76 18.65C15.35 18.41 15.88 18.09 16.38 17.71L18.77 18.67C18.99 18.74 19.24 18.67 19.36 18.45L21.28 15.13C21.39 14.93 21.34 14.66 21.16 14.52L19.14 12.94ZM12 15.6C10.02 15.6 8.4 13.98 8.4 12C8.4 10.02 10.02 8.4 12 8.4C13.98 8.4 15.6 10.02 15.6 12C15.6 13.98 13.98 15.6 12 15.6Z" fill="currentColor"/>
+</svg>
+
+<!-- Check Icon -->
+<svg id="check-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+</svg>
+
+<!-- Close Icon -->
+<svg id="close-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="currentColor"/>
+</svg>
+
+<!-- Eye Icon -->
+<svg id="eye-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor"/>
+</svg>

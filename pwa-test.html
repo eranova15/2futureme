@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FutureMe PWA Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .test-item {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .test-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .pass { background: #48bb78; color: white; }
+        .fail { background: #f56565; color: white; }
+        .warning { background: #ed8936; color: white; }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #5a67d8; }
+        .manifest-info { 
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 2FutureMe PWA Test Suite</h1>
+        <p>Testing Progressive Web App features and compatibility</p>
+        
+        <div class="test-item">
+            <span>Service Worker Support</span>
+            <span id="sw-support" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>Service Worker Registration</span>
+            <span id="sw-reg" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>Web App Manifest</span>
+            <span id="manifest" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>Install Prompt Available</span>
+            <span id="install-prompt" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>Offline Capability</span>
+            <span id="offline" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>Media Permissions</span>
+            <span id="media" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>IndexedDB Support</span>
+            <span id="indexeddb" class="test-status">Testing...</span>
+        </div>
+        
+        <div class="test-item">
+            <span>Web Speech API</span>
+            <span id="speech" class="test-status">Testing...</span>
+        </div>
+        
+        <button onclick="runTests()">🔄 Run Tests</button>
+        <button onclick="testInstall()">📱 Test Install</button>
+        <button onclick="testOffline()">🌐 Test Offline</button>
+        <button onclick="window.location.href='/'">🏠 Back to App</button>
+        
+        <div id="manifest-info" class="manifest-info" style="display: none;"></div>
+        <div id="test-results" class="test-container" style="display: none;"></div>
+    </div>
+
+    <script>
+        function setStatus(id, status, text) {
+            const element = document.getElementById(id);
+            element.className = `test-status ${status}`;
+            element.textContent = text || status.toUpperCase();
+        }
+
+        async function runTests() {
+            console.log('🧪 Running PWA tests...');
+            
+            // Test Service Worker support
+            if ('serviceWorker' in navigator) {
+                setStatus('sw-support', 'pass', 'SUPPORTED');
+            } else {
+                setStatus('sw-support', 'fail', 'NOT SUPPORTED');
+            }
+            
+            // Test Service Worker registration
+            try {
+                const registration = await navigator.serviceWorker.getRegistration();
+                if (registration) {
+                    setStatus('sw-reg', 'pass', 'REGISTERED');
+                } else {
+                    setStatus('sw-reg', 'warning', 'NOT REGISTERED');
+                }
+            } catch (error) {
+                setStatus('sw-reg', 'fail', 'ERROR');
+            }
+            
+            // Test Web App Manifest
+            try {
+                const response = await fetch('/manifest.json');
+                if (response.ok) {
+                    const manifest = await response.json();
+                    setStatus('manifest', 'pass', 'LOADED');
+                    document.getElementById('manifest-info').innerHTML = 
+                        `<strong>Manifest Details:</strong><br>
+                        Name: ${manifest.name}<br>
+                        Short Name: ${manifest.short_name}<br>
+                        Display: ${manifest.display}<br>
+                        Theme Color: ${manifest.theme_color}<br>
+                        Icons: ${manifest.icons?.length || 0}`;
+                    document.getElementById('manifest-info').style.display = 'block';
+                } else {
+                    setStatus('manifest', 'fail', 'NOT FOUND');
+                }
+            } catch (error) {
+                setStatus('manifest', 'fail', 'ERROR');
+            }
+            
+            // Test install prompt
+            if (window.deferredPrompt) {
+                setStatus('install-prompt', 'pass', 'AVAILABLE');
+            } else {
+                setStatus('install-prompt', 'warning', 'NOT AVAILABLE');
+            }
+            
+            // Test offline capability
+            try {
+                const cache = await caches.open('test-cache');
+                setStatus('offline', 'pass', 'SUPPORTED');
+            } catch (error) {
+                setStatus('offline', 'fail', 'NOT SUPPORTED');
+            }
+            
+            // Test IndexedDB
+            if ('indexedDB' in window) {
+                setStatus('indexeddb', 'pass', 'SUPPORTED');
+            } else {
+                setStatus('indexeddb', 'fail', 'NOT SUPPORTED');
+            }
+            
+            // Test Web Speech API
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                setStatus('speech', 'pass', 'SUPPORTED');
+            } else {
+                setStatus('speech', 'fail', 'NOT SUPPORTED');
+            }
+            
+            // Test media permissions
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const hasAudio = devices.some(device => device.kind === 'audioinput');
+                const hasVideo = devices.some(device => device.kind === 'videoinput');
+                
+                if (hasAudio && hasVideo) {
+                    setStatus('media', 'pass', 'AUDIO + VIDEO');
+                } else if (hasAudio) {
+                    setStatus('media', 'warning', 'AUDIO ONLY');
+                } else {
+                    setStatus('media', 'fail', 'NO DEVICES');
+                }
+            } catch (error) {
+                setStatus('media', 'fail', 'PERMISSION DENIED');
+            }
+        }
+        
+        async function testInstall() {
+            if ('serviceWorker' in navigator) {
+                const registration = await navigator.serviceWorker.getRegistration();
+                if (!registration) {
+                    try {
+                        await navigator.serviceWorker.register('/sw.js');
+                        alert('✅ Service Worker registered! Refresh to test install.');
+                    } catch (error) {
+                        alert('❌ Service Worker registration failed: ' + error.message);
+                    }
+                } else {
+                    alert('✅ Service Worker already registered. Install prompt should appear on main app.');
+                }
+            }
+        }
+        
+        async function testOffline() {
+            try {
+                // Try to fetch the offline page
+                const response = await fetch('/offline.html');
+                if (response.ok) {
+                    alert('✅ Offline page available! Try going offline and navigating to see it.');
+                } else {
+                    alert('❌ Offline page not found');
+                }
+            } catch (error) {
+                alert('❌ Error testing offline: ' + error.message);
+            }
+        }
+        
+        // Auto-run tests on load
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 500);
+        });
+        
+        // Listen for install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('💾 Install prompt available');
+            window.deferredPrompt = e;
+            setStatus('install-prompt', 'pass', 'AVAILABLE');
+        });
+    </script>
+</body>
+</html>
